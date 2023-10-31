@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/src/styles.css">
+  <title>chat</title>
+</head>
+<body>
+  <style>
+   body{
+    background: #95ccca;
+   } 
+   *{
+    text-decoration: none;
+    list-style: none;
+    box-sizing: border-box;
+   }
+   .container{
+    width: 100%;
+    height: 400px;
+    border: 2px solid black;
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    flex-direction: column;
+    
+   }
+   .user{
+   background: #853fa3;
+  width: 200px;
+  padding:0 15px;
+   border-radius: 5px;
+   color: #fff;
+   margin: 5px;
+   }
+  </style>
+  <div class="container">
+    
+  <ul id="messages">
+    <li class="user">
+      <p>nome</p>
+      <p>texto</p>
+    </li>
+     </ul>
+     <form id="form" action="">
+   <input autocomplete="off" id="input"/>
+   <button>send</button>
+   
+     </form>
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io();
+    const message = document.getElementById('messages')
+    const input = document.getElementById("input")
+    document.addEventListener('submit', (e)=>{
+     e.preventDefault()
+     if(input.value){
+      socket.emit('message',input.value)
+      input.value=''
+     }
+    })
+    socket.on('message', (msg)=>{
+    const li =  document.createElement('li')
+    li.classList.add('user')
+    li.textContent = msg
+  
+      message.appendChild(li)
+    })
+  </script>
+</body>
+</html>
